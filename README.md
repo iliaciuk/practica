@@ -1,6 +1,6 @@
 # AI Image Gallery Caption Generator
 
-This project is an image gallery that generates captions using the OpenAI API. It's built with React, Laravel, Laravel Sail, Docker, and OpenAI's GPT-4 model. 
+This project is an image gallery that generates captions using the OpenAI API. It's built with React, Laravel, Laravel Sail, Docker, and OpenAI's GPT-3.5 model. 
 
 ## Features
 
