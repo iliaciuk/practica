@@ -12,6 +12,8 @@ This project is an image gallery that generates captions using the OpenAI API. I
 - Docker
 - Composer
 - Node.js and npm
+- Laravel
+- Laravel Sail
 - An OpenAI API Key
 
 
