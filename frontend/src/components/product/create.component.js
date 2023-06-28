@@ -19,32 +19,32 @@ export default function CreateProduct() {
 		setImage(event.target.files[0]);
 	};
 
-    const createProduct = async (e) => {
-        e.preventDefault();
-      
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('description', description);
-        formData.append('image', image);
-      
-        try {
-          const response = await axios.post(`http://localhost:8000/api/products`, formData);
-          Swal.fire({
-            icon: "success",
-            text: response.data.message,
-          });
-          navigate("/");
-        } catch (error) {
-          if (error.response && error.response.status === 422) {
-            setValidationError(error.response.data.errors);
-          } else {
-            Swal.fire({
-              text: "An error occurred while creating the product.",
-              icon: "error",
-            });
-          }
-        }
-      };
+  const createProduct = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData()
+
+    formData.append('title', title)
+    formData.append('description', description)
+    formData.append('image', image)
+
+    await axios.post(`http://localhost:8000/api/products`, formData).then(({data})=>{
+      Swal.fire({
+        icon:"success",
+        text:data.message
+      })
+      navigate("/")
+    }).catch(({response})=>{
+      if(response.status===422){
+        setValidationError(response.data.errors)
+      }else{
+        Swal.fire({
+          text:response.data.message,
+          icon:"error"
+        })
+      }
+    })
+  }
 
   return (
     <div className="container">
