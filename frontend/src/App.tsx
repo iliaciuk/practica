@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import EditProduct from "./components/product/edit.component";
 import ProductList from "./components/product/list.component";
 import CreateProduct from "./components/product/create.component";
+import Login from "./components/product/login";
 
 function App(): JSX.Element {
   return (
@@ -28,7 +29,8 @@ function App(): JSX.Element {
             <Routes>
               <Route path="/product/create" element={<CreateProduct />} />
               <Route path="/product/edit/:id" element={<EditProduct />} />
-              <Route path="/" element={<ProductList />} />
+              <Route path="/" element={<Login />} /> {/* New login route */}
+              <Route path="/product" element={<ProductList />} />
             </Routes>
           </Col>
         </Row>

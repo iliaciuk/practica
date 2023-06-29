@@ -38,7 +38,7 @@ export default function CreateProduct() {
         icon: "success",
         text: data.message,
       });
-      navigate("/");
+      navigate("/product");
     } catch (error: any) {
       if (error.response && error.response.status === 422) {
         setValidationError(error.response.data.errors);

@@ -65,7 +65,7 @@ export default function EditProduct() {
         icon: "success",
         text: "Product updated successfully.",
       });
-      navigate("/");
+      navigate("/product");
     } catch (error: any) {
       const response = error.response;
       if (response && response.status === 422) {
