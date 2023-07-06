@@ -47,31 +47,21 @@ class UserController extends Controller
     }
 
 
-    // ------------ [ User Login ] -------------------
     public function userLogin(Request $request)
     {
-
-        $request->validate(
-
-            [
-                "email" => "required|email",
-                "password" => "required"
-            ]
-        );
-
-        // check if entered email exists in db
+        $request->validate([
+            "email" => "required|email",
+            "password" => "required"
+        ]);
+    
         $email_status = User::where("email", $request->email)->first();
-
-
-        // if email exists then we will check password for the same email
-
+    
         if (!is_null($email_status)) {
             $password_status = Hash::check($request->password, $email_status->password);
-
-            // if password is correct
-            if (!is_null($password_status)) {
+    
+            if ($password_status) {
                 $user = $this->userDetail($request->email);
-
+    
                 return response()->json(["status" => $this->status_code, "success" => true, "message" => "You have logged in successfully", "data" => $user]);
             } else {
                 return response()->json(["status" => "failed", "success" => false, "message" => "Unable to login. Incorrect password."]);
@@ -80,8 +70,7 @@ class UserController extends Controller
             return response()->json(["status" => "failed", "success" => false, "message" => "Unable to login. Email doesn't exist."]);
         }
     }
-
-    // ------------------ [ User Detail ] ---------------------
+    
     public function userDetail($email)
     {
         $user = array();
