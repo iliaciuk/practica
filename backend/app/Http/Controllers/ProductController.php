@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use OpenAI\API\Client;
+use OpenAI\API\Exceptions\FailedRequestException;
 
 class ProductController extends Controller
 {
@@ -23,18 +25,24 @@ class ProductController extends Controller
         if (Auth::check()) {
             $request->validate([
                 'title' => 'required',
-                'description' => 'required',
                 'image' => 'required|image'
             ]);
-
+    
             try {
                 $imageName = Str::random() . '.' . $request->image->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('product/image', $request->image, $imageName);
-
-                $product = new Product($request->post() + ['image' => $imageName]);
+    
+                $description = $this->generateDescription($request->title);
+    
+                $product = new Product([
+                    'title' => $request->title,
+                    'description' => $description,
+                    'image' => $imageName
+                ]);
+    
                 $product->user_id = Auth::id();
                 $product->save();
-
+    
                 return response()->json([
                     'message' => 'Product Created Successfully!!'
                 ]);
@@ -50,7 +58,26 @@ class ProductController extends Controller
             ], 401);
         }
     }
-
+    
+    private function generateDescription($title)
+    {
+        $openai = new Client('OPENAI_API_KEY'); 
+        $prompt = "Product: $title\nDescription:";
+    
+        try {
+            $result = $openai->complete([
+                'model' => 'text-davinci-003',
+                'prompt' => $prompt,
+                'max_tokens' => 100
+            ]);
+    
+            return $result['choices'][0]['text'];
+        } catch (FailedRequestException $e) {
+            \Log::error($e->getMessage());
+            return null;
+        }
+    }
+    
   
     public function show(Product $product)
     {
