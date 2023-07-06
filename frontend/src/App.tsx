@@ -29,7 +29,7 @@ function App(): JSX.Element {
             <Routes>
               <Route path="/product/create" element={<CreateProduct />} />
               <Route path="/product/edit/:id" element={<EditProduct />} />
-              <Route path="/" element={<Login />} /> {/* New login route */}
+              <Route path="/" element={<Login />} /> 
               <Route path="/product" element={<ProductList />} />
             </Routes>
           </Col>

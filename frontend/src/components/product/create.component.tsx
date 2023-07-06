@@ -20,19 +20,28 @@ export default function CreateProduct() {
 
   const createProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     const formData = new FormData();
-
+  
     formData.append("title", title);
     formData.append("description", description);
     if (image) {
       formData.append("image", image);
     }
-
+  
     try {
+      const token = localStorage.getItem("token"); 
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      };
+  
       const { data } = await axios.post(
         `http://localhost/api/products`,
-        formData
+        formData,
+        config
       );
       Swal.fire({
         icon: "success",
@@ -50,7 +59,7 @@ export default function CreateProduct() {
       }
     }
   };
-
+  
   return (
     <div className="container">
       <div className="row justify-content-center">

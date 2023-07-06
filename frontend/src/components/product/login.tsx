@@ -37,6 +37,7 @@ function App() {
         password: loginPassword,
       });
       if (response.data.success) {
+        localStorage.setItem("token", response.data.data.token); 
         navigate("/product");
         console.log("Logged in successfully");
       } else {
@@ -52,6 +53,9 @@ function App() {
       });
     }
   };
+  
+  
+  
 
   const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

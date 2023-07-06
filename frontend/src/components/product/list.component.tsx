@@ -14,20 +14,28 @@ interface Product {
 export default function List() {
   const [products, setProducts] = useState<Product[]>([]);
 
+  const fetchProducts = async () => {
+    try {
+      const token = localStorage.getItem("token"); 
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get<Product[]>(
+        `http://localhost/api/products`,
+        config
+      );
+      setProducts(data);
+    } catch (error) {
+      console.log("Error fetching products:", error);
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  const fetchProducts = async () => {
-    try {
-      const { data } = await axios.get<Product[]>(
-        `http://localhost/api/products`
-      );
-      setProducts(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const deleteProduct = async (id: number) => {
     const isConfirm = await Swal.fire({
